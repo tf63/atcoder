@@ -1,0 +1,51 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "g++ compile",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=gnu++17",
+                "-Wall",
+                "-Wextra",
+                "-O2",
+                "-DONLINE_JUDGE",
+                "-I/opt/boost/gcc/include",
+                "-L/opt/boost/gcc/lib",
+                "-I${workspaceFolder}/ac-library",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.out"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "cd ${fileDirname} && g++ -O0 -std=c++17 -D_GLIBCXX_DEBUG -I ~/ac-library ${fileBasename} && oj t -d ./tests/ -c ${fileBasenameNoExtension}.out",
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+            }
+        },
+        {
+            "label": "submit",
+            "type": "shell",
+            "command": "cd ${fileDirname} && CPLUS_INCLUDE_PATH=~/ac-library python3 ~/ac-library/expander.py ${fileBasename} && oj s combined.cpp",
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+            }
+        },
+        {
+            "label": "test_basic",
+            "type": "shell",
+            "command": "oj t -d ./tests/",
+        },
+    ]
+}

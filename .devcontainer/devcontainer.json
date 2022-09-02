@@ -1,0 +1,13 @@
+{
+    "name": "Atcoder",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "atcoder",
+    "workspaceFolder": "/work",
+    "extensions": [
+        "ms-python.python",
+        "ms-vscode.cpptools-extension-pack"
+    ],
+    "settings": {
+        "editor.tabSize": 4,
+    }
+}
