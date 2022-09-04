@@ -13,7 +13,7 @@ RUN apt update && \
     apt install -y time tzdata tree git curl
 
 # # C++, Python3, PyPy3の3つの環境想定
-RUN apt install -y gcc-9 g++-9 python3.8 python3-pip pypy3 nodejs npm
+RUN apt install -y gcc-9 g++-9 gdb python3.8 python3-pip  nodejs npm
 
 # # C++でAtCoder Library(ACL)を使えるようにする
 RUN git clone https://github.com/atcoder/ac-library.git /lib/ac-library
@@ -25,6 +25,14 @@ RUN npm install -g atcoder-cli@2.2.0
 
 # 起動シェルをshからbashに変更
 SHELL ["/bin/bash", "-c"]
+
+# ユーザー名を指定
+ARG USERNAME=user
+ARG GROUPNAME=user
+
+# UID, GIDはidコマンドで確認し，ログインユーザーのUID, GIDを指定する
+ARG UID=1000
+ARG GID=1000
 
 # ユーザーを作成
 RUN groupadd -g $GID $GROUPNAME && \ 

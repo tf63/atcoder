@@ -5,7 +5,8 @@
     "workspaceFolder": "/work",
     "extensions": [
         "ms-python.python",
-        "ms-vscode.cpptools-extension-pack"
+        "ms-vscode.cpptools-extension-pack",
+        "sanaajani.taskrunnercode"
     ],
     "settings": {
         "editor.tabSize": 4,
