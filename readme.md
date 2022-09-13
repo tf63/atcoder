@@ -15,8 +15,9 @@
 ```
 
 ### accの設定の変更
-- デフォルトで全部の問題がダウンロードされるようになる
-    acc config default-task-choice all
+デフォルトで全部の問題がダウンロードされるようになる
+    
+    >>> acc config default-task-choice all
 
 ---
 
