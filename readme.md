@@ -1,10 +1,9 @@
-<!-- nodejsをダウンロードしていることでコンテナがでかくなってしまっている(要修正) 
--> ac-libraryはzipファイルからインストールすることも可能 -->
+<!-- nodejsをダウンロードしていることでコンテナがでかくなってしまっている(要修正) -->
+<!-- accのインストールにnodejsを使っているが，accはzipファイルからインストールすることも可能 -->
+
 <!-- abc, arc以外のコンテストをotherにまとめておきたいのでabc_dl, arc_dl, other_dlに分けている -->
 
-### accのインストール先
-`/lib/ac-library`
-
+## はじめにやっておくこと
 ### acc, ojのログイン
 ```bash
     # ダウンロードの確認
@@ -18,6 +17,8 @@
 ### accの設定の変更
 - デフォルトで全部の問題がダウンロードされるようになる
     acc config default-task-choice all
+
+---
 
 ### 問題のダウンロード
 abc問題のダウンロード
@@ -51,3 +52,11 @@ https://qiita.com/Adaachill/items/3d4ddad56c5c2cc372cd
 https://iconcreator.hatenablog.com/entry/2021/09/19/200000
 - タスク(submit, test)
 https://blog.knshnb.com/posts/vscode-oj-acl/
+
+
+## その他
+### accのインストール先
+`/lib/ac-library`
+
+### .clang-format
+c++のformatterの設定

@@ -14,7 +14,7 @@ services:
     tty: true
     working_dir: '/work'
     volumes:
-      - ../atcoder:/work
+      - ../:/work
     # - ../problems:/root/problems:cached
     # - ../library:/root/library:cached
     # - ../.vscode:/root/.vscode:cached
