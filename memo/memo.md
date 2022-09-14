@@ -41,3 +41,4 @@ DFS 再帰関数においてすべての枝を一通り調べることになる�
 	bool seen[510][510]; // seen[h][w] := マス (h, w) が検知済みかどうか
     memset(seen, 0, sizeof(seen)); // seen 配列全体を false に初期化
 		
+### 2次元vector
