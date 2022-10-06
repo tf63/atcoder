@@ -27,6 +27,9 @@ sort(all(v), greater<int>())
 DFS 全体においてすべての頂点を一通り調べることになるので、それに要する時間が O(N)O(N)
 DFS 再帰関数においてすべての枝を一通り調べることになるので、それに要する時間が  O(M)
 
+### vectorライブラリ
+https://www.sejuku.net/blog/48660
+
 ### vectorの初期化
 
 	vector<bool> seen;

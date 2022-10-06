@@ -84,8 +84,8 @@ vec string_to_vec(string s) {
 }
 
 int next_combination(int sub) {
-  int x = sub & -sub, y = sub + x;
-  return (((sub & ~y) / x) >> 1) | y;
+    int x = sub & -sub, y = sub + x;
+    return (((sub & ~y) / x) >> 1) | y;
 }
 
 int main() {
@@ -94,62 +94,61 @@ int main() {
     // ----------------------------------------------------------------
     int H1, H2, W1, W2;
     cin >> H1 >> W1;
-    vector<vector<int>> A(H1, vector<int>(W1)), B(H2, vector<int>(W2));
-    // rep(i, H1) {
-    //     rep(j, W1) {
-    //         cin >> A.at(i).at(j);
-    //     }
-    // }
+    vector<vector<int>> A(H1, vector<int>(W1));
+    rep(i, H1) {
+        rep(j, W1) {
+            cin >> A.at(i).at(j);
+        }
+    }
     cin >> H2 >> W2;
-    // rep(i, H2) {
-    //     rep(j, W2) {
-    //         cin >> B.at(i).at(j);
-    //     }
-    // }
+    vector<vector<int>> B(H2, vector<int>(W2));
+    rep(i, H2) {
+        rep(j, W2) {
+            cin >> B.at(i).at(j);
+        }
+    }
     vec hind(H2);
     vec wind(W2);
-
     int hveci = 0, wveci = 0;
 
     int hbit = (1 << H2) - 1;
     int wbit = (1 << W2) - 1;
-
     bool equal = true;
-    cout << "a" << endl;
-    for(; hbit < (1 << H1); hbit = next_combination(hbit)) {
-        
+
+    for (; hbit < (1 << H1); hbit = next_combination(hbit)) {
         rep(i, H1) {
             if (hbit & (1 << i)) {
                 hind.at(hveci) = i;
                 hveci++;
             }
-            cout << "b";
         }
-        cout << "a1" << endl;
         hveci = 0;
-        for(; wbit < (1 << W1); wbit = next_combination(wbit)) {
-            
+        // cout << "H: " << hind.at(0) << " " << hind.at(1) << " " << hind.at(2) << endl;
+
+        wbit = (1 << W2) - 1;
+        for (; wbit < (1 << W1); wbit = next_combination(wbit)) {
             rep(i, W1) {
                 if (wbit & (1 << i)) {
                     wind.at(wveci) = i;
                     wveci++;
                 }
-                cout << "b";
-                wveci = 0;
             }
-            cout << hind.at(0) << " " << hind.at(1) << " " << hind.at(2) << " " << wind.at(0) << " " << wind.at(1) << " " << wind.at(2) << endl;
-            // rep(i, H2) {
-            //     rep(j, W2) {
-            //         if (A.at(hind.at(i)).at(wind.at(j)) != B.at(i).at(j)) {
-            //             equal = false;
-            //         }
-            //     }
-            // }
+            wveci = 0;
+            // cout << "W: " << wind.at(0) << " " << wind.at(1) << " " << wind.at(2) << endl;
+            rep(i, H2) {
+                rep(j, W2) {
+                    if (A.at(hind.at(i)).at(wind.at(j)) != B.at(i).at(j)) {
+                        equal = false;
+                    }
+                }
+            }
 
-            // if (equal) {
-            //     cout << "Yes" << endl;
-            //     return 0;
-            // }
+            if (equal) {
+                cout << "Yes" << endl;
+                return 0;
+            }
+
+            equal = true;
         }
     }
 
