@@ -74,6 +74,13 @@ void print_vec(vec v) {
     cout << endl;
 }
 
+void print_vecll(vecll v) {
+    rep(i, (int)v.size()) {
+        cout << v.at(i);
+    }
+    cout << endl;
+}
+
 vec string_to_vec(string s) {
     vec v(s.size());
     rep(i, (int)s.size()) {
@@ -82,70 +89,42 @@ vec string_to_vec(string s) {
     return v;
 }
 
-bool dfs(vector<vector<bool>>& G, int ra, int ca, int rb, int cb, vector<vector<bool>> visit) {
-    if (visit.at(ra).at(ca)) {
-        return false;
-    }
-    visit.at(ra).at(ca) = true;
+char int_to_alphabet(int i) {
+    // i = 0 -> a
+    // i = 25 -> z
+    return i + 'a';
+}
 
-    if (!G.at(ra).at(ca)) {
-        return false;
-    }
-
-    if (ra == rb && ca == cb) {
-        return true;
-    }
-
-    bool goal = false;
-    if (ra != 1) {
-        goal |= dfs(G, ra - 1, ca, rb, cb, visit);
-    }
-    if (ra != (int)G.size() - 1) {
-        goal |= dfs(G, ra + 1, ca, rb, cb, visit);
-    }
-    if (ca != 1) {
-        goal |= dfs(G, ra, ca - 1, rb, cb, visit);
-    }
-    if (ca != (int)G.at(0).size() - 1) {
-        goal |= dfs(G, ra, ca + 1, rb, cb, visit);
-    }
-
-    return goal;
+int alphabet_to_int(char s) {
+    return s - 'a';
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
-    int H, W;
-    cin >> H >> W;
-    int Q;
-    cin >> Q;
-    int t;
-    int r, c;
-    int ra, ca, rb, cb;
-    vector<vector<bool>> G(H + 1, vector<bool>(W + 1));
-    rep(i, Q) {
-        cin >> t;
+    int N;
+    cin >> N;
+    vec A(N), Asort(N);
+    int a;
+    map<int, int> Acount;
 
-        if (t == 1) {
-            cin >> r >> c;
+    rep(i, N) {
+        cin >> a;
+        A.at(i) = a;
+        Asort.at(i) = a;
+        Acount[a]++;
+    }
 
-            G.at(r).at(c) = true;
+    sort(all(Asort));
+    Asort.erase(std::unique(all(Asort)), Asort.end());
+
+    int Ns = (int)Asort.size();
+    rep(i, N) {
+        if (Ns - i - 1 >= 0) {
+            cout << Acount[Asort.at(Ns - i - 1)] << endl;
         } else {
-            cin >> ra >> ca >> rb >> cb;
-            vector<vector<bool>> visit(H + 1, vector<bool>(W + 1));
-
-            if (!(G.at(ra).at(ca) && G.at(rb).at(cb))) {
-                cout << "No" << endl;
-                continue;
-            }
-
-            if (dfs(G, ra, ca, rb, cb, visit)) {
-                cout << "Yes" << endl;
-            } else {
-                cout << "No" << endl;
-            }
+            cout << 0 << endl;
         }
     }
     // ----------------------------------------------------------------
