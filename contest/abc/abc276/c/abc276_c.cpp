@@ -4,8 +4,11 @@
 #include <climits>
 #include <cmath>
 #include <cstdio>
+#include <functional>
 #include <iostream>
+#include <iterator>
 #include <map>
+#include <numeric>
 #include <queue>
 #include <stack>
 #include <string>
@@ -20,17 +23,21 @@ using namespace std;
 #define Graph vector<vector<int>>
 #define wGraph vector<vector<Edge>>
 
-#define rep(i, n) for (ll i = 0; i < (int)(n); i++)
+#define rep(i, n) for (int i = 0; i < (int)(n); i++)
 /* rep(i, n) {
-    cout << i;
+        cout << i;
   }
 */
+/* for (auto& x: X) {
+        cin >> x;
+    }
+*/
 
-#define krep(i, k, n) for (ll i = k; i < (int)(n); i++)
+#define krep(i, k, n) for (int i = k; i < (int)(n); i++)
 
-#define prep(i, n) for (ll i = 1; i <= (int)(n); i++)
+#define prep(i, n) for (int i = 1; i <= (int)(n); i++)
 
-#define irep(i, n) for (ll i = n - 1; i >= 0; i--)
+#define irep(i, n) for (int i = n - 1; i >= 0; i--)
 
 #define all(v) v.begin(), v.end()
 /*
@@ -39,21 +46,11 @@ using namespace std;
 */
 
 #define INF INT_MAX
-#define MINF INT_MIN
 #define LINF LLONG_MAX
-#define MLINF LLONG_MIN
 
 const int dx[4] = {1, 0, -1, 0};
 const int dy[4] = {0, 1, 0, -1};
 
-const unsigned int bit0 = (1 << 0);  // 0000 0000 0000 0001
-const unsigned int bit1 = (1 << 1);  // 0000 0000 0000 0010
-const unsigned int bit2 = (1 << 2);  // 0000 0000 0000 0100
-const unsigned int bit3 = (1 << 3);  // 0000 0000 0000 1000
-const unsigned int bit4 = (1 << 4);  // 0000 0000 0001 0000
-const unsigned int bit5 = (1 << 5);  // 0000 0000 0010 0000
-const unsigned int bit6 = (1 << 6);  // 0000 0000 0100 0000
-const unsigned int bit7 = (1 << 7);  // 0000 0000 1000 0000
 /* -------------------------------------------------------------------
 if (bit & (1 << i)) -> i番目のフラグがたっているか
 bit |= (1 << i) -> i番目のフラグをたてる
@@ -71,6 +68,13 @@ vecll pow_vecll{1,        10,        100,        1000,        10000,        1000
                 10000000, 100000000, 1000000000, 10000000000, 100000000000, 1000000000000};
 
 void print_vec(vec v) {
+    rep(i, (int)v.size() - 1) {
+        cout << v.at(i) << " ";
+    }
+    cout << v.back() << endl;
+}
+
+void print_vecll(vecll v) {
     rep(i, (int)v.size()) {
         cout << v.at(i);
     }
@@ -85,40 +89,57 @@ vec string_to_vec(string s) {
     return v;
 }
 
+char int_to_alphabet(int i) {
+    // i = 0 -> a
+    // i = 25 -> z
+    return i + 'a';
+}
+
+int alphabet_to_int(char s) {
+    return s - 'a';
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
-    ll N;
+    int N;
     cin >> N;
-    vecll A(N + 1);
-    prep(i, N) {
-        cin >> A.at(i);
+    vec P(N);
+    rep(i, N) {
+        cin >> P.at(i);
     }
 
-    ll mod = 998244353;
+    vec rev(0);
 
-    ll sum = 0;
-    prep(i, N) {
-        vector<vector<vector<ll>>> dp(N + 1, vector<vector<ll>>(N + 1, vector<ll>(N + 1)));
-        dp.at(0).at(0).at(0) = 1;
+    int bef = 200;
+    int lim = -1;
+    for (int i = N - 1; i >= 0; i--) {
+        rev.push_back(P.at(i));
 
-        prep(j, N) {
-            dp.at(j).at(0).at(0) = (dp.at(j).at(0).at(0) + dp.at(j - 1).at(0).at(0)) % mod;
-            prep(k, N) {
-                rep(l, N) {
-                    dp.at(j).at(k).at(l) = (dp.at(j).at(k).at(l) + dp.at(j - 1).at(k).at(l)) % mod;
-                    int idx = A.at(j) % i;
-                    idx = (idx + l) % i;
-                    dp.at(j).at(k).at(idx) = (dp.at(j).at(k).at(idx) + dp.at(j - 1).at(k - 1).at(l)) % mod;
-                }
-            }
+        if (bef < P.at(i)) {
+            lim = i;
+            break;
         }
 
-        sum = (sum + dp.at(N).at(i).at(0)) % mod;
+        bef = P.at(i);
     }
 
-    cout << sum << endl;
+    rep(i, lim) {
+        cout << P.at(i) << " ";
+    }
+
+    vec rev_sort;
+    copy(all(rev), back_inserter(rev_sort));
+    sort(all(rev_sort));
+
+    int a = find(all(rev_sort), rev.back()) - rev_sort.begin() - 1;
+    cout << rev_sort.at(a) << " ";
+
+    rev_sort.erase(rev_sort.begin() + a);
+    sort(all(rev_sort), greater<int>());
+
+    print_vec(rev_sort);
     // ----------------------------------------------------------------
     return 0;
 }
