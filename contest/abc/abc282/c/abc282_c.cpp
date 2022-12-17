@@ -104,36 +104,39 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
-    int H, W, N, h, w;
-    cin >> H >> W >> N >> h >> w;
-    vector<vec> A(H, vec(W));
+    int N;
+    string S;
+    cin >> N >> S;
+    vec cma_idx;
+    vec range_idx(N);
 
-    set<int> st;
-    map<int, int> cntmap;
-    rep(i, H) {
-        rep(j, W) {
-            cin >> A.at(i).at(j);
-            cntmap[A.at(i).at(j)]++;
-            st.insert(A.at(i).at(j));
+    bool inside = false;
+    rep(i, N) {
+        if (S.at(i) == ',') {
+            cma_idx.push_back(i);
         }
-    }
+        if (inside) {
+            range_idx.at(i) = 1;
 
-    rep(i, h) {
-        rep(j, w) {
-            cntmap[A.at(i).at(j)]--;
-            if (cntmap[A.at(i).at(j)] == 0) {
-                st.erase(A.at(i).at(j));
+            if (S.at(i) == '"') {
+                inside = false;
+            }
+        } else {
+            if (S.at(i) == '"') {
+                inside = true;
+
+                range_idx.at(i) = 1;
             }
         }
     }
 
-    rep(i, H - h + 1) {
-        for (int j = 1; j < W - w + 1; j++) {
-            rep(l, h) {
-                A.at(i + l).at(j + w)
-            }
+    for (auto i : cma_idx) {
+        if (range_idx.at(i) == 0) {
+            S.at(i) = '.';
         }
     }
+
+    cout << S << endl;
     // ----------------------------------------------------------------
     return 0;
 }

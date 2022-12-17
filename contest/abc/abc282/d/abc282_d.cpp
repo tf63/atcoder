@@ -104,36 +104,78 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
-    int H, W, N, h, w;
-    cin >> H >> W >> N >> h >> w;
-    vector<vec> A(H, vec(W));
+    int N, M;
 
-    set<int> st;
-    map<int, int> cntmap;
-    rep(i, H) {
-        rep(j, W) {
-            cin >> A.at(i).at(j);
-            cntmap[A.at(i).at(j)]++;
-            st.insert(A.at(i).at(j));
-        }
+    cin >> N >> M;
+    vector<vec> G(N + 1, vec());
+    set<int> nodes;
+    int u, v;
+    rep(i, M) {
+        cin >> u >> v;
+        nodes.insert(u);
+        nodes.insert(v);
+        G.at(u).push_back(v);
+        G.at(v).push_back(u);
     }
 
-    rep(i, h) {
-        rep(j, w) {
-            cntmap[A.at(i).at(j)]--;
-            if (cntmap[A.at(i).at(j)] == 0) {
-                st.erase(A.at(i).at(j));
+    vector<pair<vec, vec>> uv;
+    vec cls(N + 1);
+
+    while (!nodes.empty()) {
+        int node = *nodes.begin();
+        uv.push_back(pair<vec, vec>());
+
+        uv.back().first.push_back(node);
+        cls.at(node) = 1;
+        nodes.erase(node);
+
+        queue<int> q;
+        q.push(node);
+        while (!q.empty()) {
+            node = q.front();
+            nodes.erase(node);
+            q.pop();
+            for (auto g : G.at(node)) {
+                if (cls.at(g) == 0) {
+                    // 未探索だったら追加
+                    if (cls.at(node) == 1) {
+                        uv.back().second.push_back(g);
+                        cls.at(g) = 2;
+                    } else {
+                        uv.back().first.push_back(g);
+                        cls.at(g) = 1;
+                    }
+                    q.push(g);
+                } else {
+                    if (cls.at(node) == cls.at(g)) {
+                        // 連結
+                        cout << 0 << endl;
+                        return 0;
+                    } else {
+                        // pass
+                    }
+                }
             }
         }
     }
 
-    rep(i, H - h + 1) {
-        for (int j = 1; j < W - w + 1; j++) {
-            rep(l, h) {
-                A.at(i + l).at(j + w)
-            }
+    ll ans = -M;
+    vec its;
+    for (auto it : uv) {
+        int fn = (int)it.first.size();
+        int sn = (int)it.second.size();
+        its.push_back(fn + sn);
+        ans = fn * sn;
+    }
+
+    for (int i = 0; i < (int)its.size(); i++) {
+        for (int j = i + 1; j < (int)its.size(); j++) {
+            ans += its.at(i) * its.at(j);
         }
     }
+
+    cout << ans << endl;
+
     // ----------------------------------------------------------------
     return 0;
 }

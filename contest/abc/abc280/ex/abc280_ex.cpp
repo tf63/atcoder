@@ -104,36 +104,7 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
-    int H, W, N, h, w;
-    cin >> H >> W >> N >> h >> w;
-    vector<vec> A(H, vec(W));
 
-    set<int> st;
-    map<int, int> cntmap;
-    rep(i, H) {
-        rep(j, W) {
-            cin >> A.at(i).at(j);
-            cntmap[A.at(i).at(j)]++;
-            st.insert(A.at(i).at(j));
-        }
-    }
-
-    rep(i, h) {
-        rep(j, w) {
-            cntmap[A.at(i).at(j)]--;
-            if (cntmap[A.at(i).at(j)] == 0) {
-                st.erase(A.at(i).at(j));
-            }
-        }
-    }
-
-    rep(i, H - h + 1) {
-        for (int j = 1; j < W - w + 1; j++) {
-            rep(l, h) {
-                A.at(i + l).at(j + w)
-            }
-        }
-    }
     // ----------------------------------------------------------------
     return 0;
 }

@@ -100,40 +100,84 @@ int alphabet_to_int(char s) {
     return s - 'a';
 }
 
+bool dfs(vector<vec>& G, int v, pair<int, int>& p, int color, vector<int>& colors) {
+    colors.at(v) = color;
+    if (color == 1) {
+        p.first++;
+    } else if (color == -1) {
+        p.second++;
+    }
+
+    for (auto g : G.at(v)) {
+        if (colors.at(g) == color) {
+            return false;
+        }
+        if (colors.at(g) == 0 && !dfs(G, g, p, -color, colors)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
-    int H, W, N, h, w;
-    cin >> H >> W >> N >> h >> w;
-    vector<vec> A(H, vec(W));
+    int N, M;
 
-    set<int> st;
-    map<int, int> cntmap;
-    rep(i, H) {
-        rep(j, W) {
-            cin >> A.at(i).at(j);
-            cntmap[A.at(i).at(j)]++;
-            st.insert(A.at(i).at(j));
-        }
+    cin >> N >> M;
+    vector<vec> G(N + 1, vec());
+    set<int> nodes;
+    int u, v;
+    rep(i, M) {
+        cin >> u >> v;
+        nodes.insert(u);
+        nodes.insert(v);
+        G.at(u).push_back(v);
+        G.at(v).push_back(u);
     }
 
-    rep(i, h) {
-        rep(j, w) {
-            cntmap[A.at(i).at(j)]--;
-            if (cntmap[A.at(i).at(j)] == 0) {
-                st.erase(A.at(i).at(j));
+    vector<bool> visit(N + 1);
+
+    vector<vec> divG;
+
+    prep(i, N) {
+        if (!visit.at(i)) {
+            divG.push_back(vec());
+
+            queue<int> q;
+            q.push(i);
+            divG.back().push_back(i);
+            visit.at(i) = true;
+            while (!q.empty()) {
+                int node = q.front();
+                q.pop();
+                for (auto g : G.at(node)) {
+                    if (!visit.at(g)) {
+                        q.push(g);
+                        divG.back().push_back(g);
+                        visit.at(g) = true;
+                    }
+                }
             }
         }
     }
 
-    rep(i, H - h + 1) {
-        for (int j = 1; j < W - w + 1; j++) {
-            rep(l, h) {
-                A.at(i + l).at(j + w)
-            }
+    vector<bool> visit2(N + 1);
+    ll ans = N * (N - 1) / 2 - M;
+    for (auto it : divG) {
+        pair<int, int> p = {0, 0};
+        vector<int> colors(N + 1);
+        if (!dfs(G, it.front(), p, 1, colors)) {
+            cout << 0 << endl;
+            return 0;
         }
+
+        ans -= p.first * (p.first - 1) / 2 + p.second * (p.second - 1) / 2;
     }
+
+    cout << ans << endl;
     // ----------------------------------------------------------------
     return 0;
 }

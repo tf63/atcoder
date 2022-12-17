@@ -104,36 +104,48 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
-    int H, W, N, h, w;
-    cin >> H >> W >> N >> h >> w;
-    vector<vec> A(H, vec(W));
+    ll K;
+    cin >> K;
 
-    set<int> st;
-    map<int, int> cntmap;
-    rep(i, H) {
-        rep(j, W) {
-            cin >> A.at(i).at(j);
-            cntmap[A.at(i).at(j)]++;
-            st.insert(A.at(i).at(j));
+    ll N = K;
+    vector<pair<long long, long long>> res;
+    for (long long a = 2; a * a <= K; ++a) {
+        if (N % a != 0)
+            continue;
+        long long ex = 0;  // 指数
+
+        // 割れる限り割り続ける
+        while (N % a == 0) {
+            ++ex;
+            N /= a;
         }
-    }
 
-    rep(i, h) {
-        rep(j, w) {
-            cntmap[A.at(i).at(j)]--;
-            if (cntmap[A.at(i).at(j)] == 0) {
-                st.erase(A.at(i).at(j));
+        // その結果を push
+        res.push_back({a, ex});
+    }
+    ll ans = 0;
+
+    for (auto t : res) {
+        ll a = t.first * t.second;
+        ll permax = a;
+        int e = 1;
+
+        while (true) {
+            ll r = (ll)(a / pow(t.first, e));
+            permax -= r;
+            if (r < 1) {
+                break;
             }
+            e++;
         }
+        ans = max(ans, permax);
     }
 
-    rep(i, H - h + 1) {
-        for (int j = 1; j < W - w + 1; j++) {
-            rep(l, h) {
-                A.at(i + l).at(j + w)
-            }
-        }
+    if (res.empty()) {
+        ans = K;
     }
+
+    cout << ans << endl;
     // ----------------------------------------------------------------
     return 0;
 }

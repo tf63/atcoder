@@ -104,36 +104,36 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
-    int H, W, N, h, w;
-    cin >> H >> W >> N >> h >> w;
-    vector<vec> A(H, vec(W));
-
-    set<int> st;
-    map<int, int> cntmap;
-    rep(i, H) {
-        rep(j, W) {
-            cin >> A.at(i).at(j);
-            cntmap[A.at(i).at(j)]++;
-            st.insert(A.at(i).at(j));
-        }
-    }
-
-    rep(i, h) {
-        rep(j, w) {
-            cntmap[A.at(i).at(j)]--;
-            if (cntmap[A.at(i).at(j)] == 0) {
-                st.erase(A.at(i).at(j));
+    int N, M;
+    cin >> N >> M;
+    vector<string> S(N);
+    vector<ll> Sval(N);
+    rep(i, N) {
+        cin >> S.at(i);
+        rep(j, M) {
+            if (S.at(i).at(j) == 'o') {
+                Sval.at(i) += (1 << j);
             }
         }
     }
 
-    rep(i, H - h + 1) {
-        for (int j = 1; j < W - w + 1; j++) {
-            rep(l, h) {
-                A.at(i + l).at(j + w)
+    int ans = 0;
+    ll cor = 0;
+
+    rep(i, M) {
+        cor += (1 << i);
+    }
+
+    rep(i, N) {
+        for (int j = i + 1; j < N; j++) {
+            if ((Sval.at(i) | Sval.at(j)) == cor) {
+                ans++;
             }
         }
     }
+
+    cout << ans << endl;
+
     // ----------------------------------------------------------------
     return 0;
 }
