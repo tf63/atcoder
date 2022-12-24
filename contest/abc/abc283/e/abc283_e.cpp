@@ -104,7 +104,52 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    int H, W;
+    cin >> H >> W;
+    vector<vector<bool>> A(H + 2, vector<bool>(W + 2));
+    int a;
+    prep(i, H) {
+        prep(j, W) {
+            cin >> a;
+            A.at(i).at(j) = (a == 1);
+        }
+    }
+    prep(i, H) {
+        A.at(i).at(0) = !A.at(i).at(1);
+        A.at(i).at(W + 1) = !A.at(i).at(W);
+    }
 
+    prep(j, W) {
+        A.at(0).at(j) = !A.at(1).at(j);
+        A.at(H + 1).at(j) = !A.at(H).at(j);
+    }
+    int ans = 0;
+    for (int i = 2; i <= H; i++) {
+        bool front = false;
+        bool back = false;
+        prep(j, W) {
+            front |= (A.at(i).at(j) ^ A.at(i - 1).at(j)) && (A.at(i).at(j) ^ A.at(i).at(j - 1)) &&
+                     (A.at(i).at(j) ^ A.at(i + 1).at(j)) && (A.at(i).at(j) ^ A.at(i).at(j + 1));
+
+            back |= (A.at(i).at(j) ^ A.at(i - 1).at(j)) && (A.at(i).at(j) ^ A.at(i).at(j - 1)) &&
+                    (A.at(i).at(j) ^ !A.at(i + 1).at(j)) && (A.at(i).at(j) ^ A.at(i).at(j + 1));
+        }
+
+        // 孤立点が存在したら
+        if (front && back) {
+            cout << -1 << endl;
+            return 0;
+        }
+
+        if (front && !back) {
+            prep(j, W) {
+                A.at(i).at(j) = !A.at(i).at(j);
+            }
+            ans++;
+        }
+    }
+
+    cout << ans << endl;
     // ----------------------------------------------------------------
     return 0;
 }

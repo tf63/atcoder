@@ -104,7 +104,28 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    int N;
+    cin >> N;
 
+    vec A(N + 1);
+    prep(i, N) {
+        cin >> A.at(i);
+    }
+
+    int Q;
+    cin >> Q;
+
+    int q, k, x;
+    rep(i, Q) {
+        cin >> q;
+        if (q == 1) {
+            cin >> k >> x;
+            A.at(k) = x;
+        } else {
+            cin >> k;
+            cout << A.at(k) << endl;
+        }
+    }
     // ----------------------------------------------------------------
     return 0;
 }

@@ -104,7 +104,40 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    string S;
+    cin >> S;
+    queue<int> q;
+    int i = 0;
+    while (true) {
+        int k = 0;
+        while (S.at(i) == '0') {
+            k++;
 
+            if (i == (int)S.size() - 1) {
+                break;
+            }
+            i++;
+        }
+
+        if (k != 0) {
+            q.push(k);
+        }
+
+        if (i == (int)S.size() - 1) {
+            break;
+        }
+        i++;
+    }
+
+    ll ans = (int)S.size();
+    while (!q.empty()) {
+        int qi = q.front();
+        q.pop();
+
+        ans -= qi / 2;
+    }
+
+    cout << ans << endl;
     // ----------------------------------------------------------------
     return 0;
 }

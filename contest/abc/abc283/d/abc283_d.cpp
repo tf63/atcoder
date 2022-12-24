@@ -104,7 +104,37 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    string S;
+    cin >> S;
+    stack<char> q;
+    vector<int> qk;
+    qk.push_back(0);
+    vector<bool> alpha(26);
+    rep(i, S.size()) {
+        if (S.at(i) == '(') {
+            qk.push_back(0);
+        } else if (S.at(i) == ')') {
+            int qkval = qk.back();
+            rep(i, qkval) {
+                char qval = q.top();
+                alpha.at(alphabet_to_int(qval)) = false;
+                // cout << "out " << qval << endl;
+                q.pop();
+            }
+            qk.pop_back();
+        } else {
+            if (alpha.at(alphabet_to_int(S.at(i)))) {
+                cout << "No" << endl;
+                return 0;
+            }
+            alpha.at(alphabet_to_int(S.at(i))) = true;
+            q.push(S.at(i));
+            // cout << "in " << S.at(i) << endl;
+            qk.back()++;
+        }
+    }
 
+    cout << "Yes" << endl;
     // ----------------------------------------------------------------
     return 0;
 }

@@ -26,7 +26,7 @@ using namespace std;
 
 #define prep(i, n) for (int i = 1; i <= (int)(n); i++)
 
-#define irep(i, n) for (int i = n - 1; i >= 0; i--)
+#define irep(i, n) for (int i = (int)n - 1; i >= 0; i--)
 
 #define all(v) v.begin(), v.end()
 /*
@@ -78,6 +78,7 @@ vec string_to_vec(string s) {
     }
     return v;
 }
+#include <set>
 
 int main() {
     ios_base::sync_with_stdio(false);
@@ -85,11 +86,42 @@ int main() {
     // ----------------------------------------------------------------
     int N;
     cin >> N;
-    vec T(N), X(N), A(N);
+    vector<bool> T(1000000);
+    stack<int> A, X;
+    int t, a, x;
+    int tmax = -1;
     rep(i, N) {
-        cin >> T.at(i) >> X.at(i) >> A.at(i);
+        cin >> t >> x >> a;
+
+        X.push(x);
+        A.push(a);
+        T.at(t) = true;
+        tmax = max(tmax, t);
     }
 
-        // ----------------------------------------------------------------
+    vector<vec> dp(tmax + 1, vec(5, -1));
+    dp.at(0).at(0) = 0;
+
+    prep(i, tmax) {
+        rep(j, 5) {
+            if (j == 0) {
+                dp.at(i).at(j) = max(dp.at(i - 1).at(j), dp.at(i - 1).at(j + 1));
+            } else if (j == 4) {
+                dp.at(i).at(j) = max(dp.at(i - 1).at(j - 1), dp.at(i - 1).at(j));
+            } else {
+                dp.at(i).at(j) = max(dp.at(i - 1).at(j - 1), dp.at(i - 1).at(j));
+                dp.at(i).at(j) = max(dp.at(i).at(j), dp.at(i - 1).at(j + 1));
+            }
+        }
+
+        if (T.at(i)) {
+            dp.at(i).at(X.top()) += A.top();
+            X.pop();
+            A.pop();
+        }
+    }
+
+    cout << *max_element(all(dp.at(tmax))) << endl;
+    // ----------------------------------------------------------------
     return 0;
 }
