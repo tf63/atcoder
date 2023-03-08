@@ -100,16 +100,6 @@ int alphabet_to_int(char s) {
     return s - 'a';
 }
 
-int mmod(int a, int b) {
-    a += (abs(a / b) + 1) * b;
-    return a % b;
-}
-
-ll mmod(ll a, ll b) {
-    a += (abs(a / b) + 1) * b;
-    return a % b;
-}
-
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);

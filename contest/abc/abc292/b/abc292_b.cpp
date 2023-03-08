@@ -100,21 +100,29 @@ int alphabet_to_int(char s) {
     return s - 'a';
 }
 
-int mmod(int a, int b) {
-    a += (abs(a / b) + 1) * b;
-    return a % b;
-}
-
-ll mmod(ll a, ll b) {
-    a += (abs(a / b) + 1) * b;
-    return a % b;
-}
-
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    int N, Q;
+    cin >> N >> Q;
+    vec X(N + 1);
+    rep(i, Q) {
+        int q, x;
+        cin >> q >> x;
 
+        if (q == 1) {
+            X.at(x)++;
+        } else if (q == 2) {
+            X.at(x) += 2;
+        } else {
+            if (X.at(x) >= 2) {
+                cout << "Yes" << endl;
+            } else {
+                cout << "No" << endl;
+            }
+        }
+    }
     // ----------------------------------------------------------------
     return 0;
 }

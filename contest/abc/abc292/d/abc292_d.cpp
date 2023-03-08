@@ -100,20 +100,67 @@ int alphabet_to_int(char s) {
     return s - 'a';
 }
 
-int mmod(int a, int b) {
-    a += (abs(a / b) + 1) * b;
-    return a % b;
-}
+// 深さ優先探索
 
-ll mmod(ll a, ll b) {
-    a += (abs(a / b) + 1) * b;
-    return a % b;
+vector<int> cc;  // どの連結成分か記録
+void dfs(const Graph& G, int v, int id) {
+    cc[v] = id;
+
+    for (auto e : G[v]) {
+        if (cc[e] == -1) {  // 訪問済みでなければ探索
+            dfs(G, e, id);
+        }
+    }
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+
+    int n, m;
+    cin >> n >> m;
+    Graph G(n + 1);
+    vec E(n + 1);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        E[u]++;
+        E[v]++;
+        G[u].push_back(v);
+        G[v].push_back(u);
+    }
+
+    cc.assign(n + 1, -1);  // 初期化
+    int id = 0;
+    prep(i, n) {
+        if (cc[i] == -1) {
+            dfs(G, i, id);
+            id++;
+        }
+    }
+
+    vec ns(id), es(id);
+    prep(i, n) {
+        ns.at(cc.at(i))++;
+        es.at(cc.at(i)) += E.at(i);
+    }
+
+    bool ans = true;
+    rep(i, id) {
+        // cout << ns.at(i) << es.at(i) << endl;
+        if (ns.at(i) != (es.at(i) / 2)) {
+            ans = false;
+        }
+    }
+
+    // cout << "id" << id << endl;
+
+    if (ans) {
+        cout << "Yes" << endl;
+    } else {
+        cout << "No" << endl;
+    }
 
     // ----------------------------------------------------------------
     return 0;

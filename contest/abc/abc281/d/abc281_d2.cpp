@@ -38,7 +38,7 @@ using namespace std;
 
 #define prep(i, n) for (int i = 1; i <= (int)(n); i++)
 
-#define irep(i, n) for (int i = (int)n - 1; i >= 0; i--)
+#define irep(i, n) for (int i = n - 1; i >= 0; i--)
 
 #define all(v) v.begin(), v.end()
 /*
@@ -105,15 +105,47 @@ int mmod(int a, int b) {
     return a % b;
 }
 
-ll mmod(ll a, ll b) {
-    a += (abs(a / b) + 1) * b;
-    return a % b;
-}
-
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    int N, K, D;
+    cin >> N >> K >> D;
+
+    vec A(N + 1);
+    prep(i, N) {
+        cin >> A.at(i);
+    }
+
+    vector<vector<vecll>> dp(N + 1, vector<vecll>(K + 1, vecll(D, -1)));
+    // 初期状態
+    dp[0][0][0] = 0;
+
+    prep(i, N) {
+        // 初期状態
+        dp[i][0][0] = 0;
+        prep(j, K) {
+            if (j > i) {
+                // 遷移不可
+                break;
+            }
+            rep(k, D) {
+                // A[i]を選択
+                if (dp[i - 1][j - 1][mmod((k - A.at(i) + D), D)] != -1) {
+                    // 遷移できれば
+                    dp[i][j][k] = max(dp[i - 1][j - 1][mmod((k - A.at(i) + D), D)] + A.at(i), dp[i][j][k]);
+                }
+
+                // A[i]を選択しない
+                if (dp[i - 1][j][k] != -1) {
+                    // 遷移できれば
+                    dp[i][j][k] = max(dp[i - 1][j][k], dp[i][j][k]);
+                }
+            }
+        }
+    }
+
+    cout << dp[N][K][0] << endl;
 
     // ----------------------------------------------------------------
     return 0;

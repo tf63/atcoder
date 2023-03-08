@@ -100,21 +100,73 @@ int alphabet_to_int(char s) {
     return s - 'a';
 }
 
-int mmod(int a, int b) {
-    a += (abs(a / b) + 1) * b;
-    return a % b;
+// 素因数分解
+template <typename T>
+map<T, T> prime_factor(T n) {
+    map<T, T> ret;
+    for (T i = 2; i * i <= n; i++) {
+        T tmp = 0;
+        while (n % i == 0) {
+            tmp++;
+            n /= i;
+        }
+        ret[i] = tmp;
+    }
+    if (n != 1)
+        ret[n] = 1;
+    return ret;
 }
-
-ll mmod(ll a, ll b) {
-    a += (abs(a / b) + 1) * b;
-    return a % b;
+/*  divisor_num(n)
+    入力：整数 n
+    出力：nの約数の個数
+    計算量：O(√n)
+*/
+template <typename T>
+T divisor_num(T N) {
+    map<T, T> pf = prime_factor(N);
+    T ret = 1;
+    for (auto p : pf) {
+        ret *= (p.second + 1);
+    }
+    return ret;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    int N;
+    cin >> N;
 
+    vecll EX(N + 1, 1);
+    prep(i, N) {
+        EX.at(i) = divisor_num(i);
+        // ll n = i;
+        // for (long long a = 2; a * a <= n; ++a) {
+        //     ll ex = 0;
+        //     if (n % a != 0)
+        //         continue;
+
+        //     // 割れる限り割り続ける
+        //     while (n % a == 0) {
+        //         ++ex;
+        //         n /= a;
+        //     }
+
+        //     EX.at(i) *= (ex + 1);
+        // }
+        // cout << EX.at(i) << "a" << endl;
+    }
+    // for (int i = 1; i * i <= N; i++) {
+    //     EX.at(i * i)--;
+    // }
+
+    ll answer = 0;
+    for (int i = 1; i < N; i++) {
+        answer += EX.at(i) * EX.at(N - i);
+    }
+
+    cout << answer << endl;
     // ----------------------------------------------------------------
     return 0;
 }
