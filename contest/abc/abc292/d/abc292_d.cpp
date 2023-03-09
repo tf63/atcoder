@@ -1,0 +1,167 @@
+#pragma GCC optimize("Ofast")
+
+#include <algorithm>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <iostream>
+#include <iterator>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <stack>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+#define ll long long
+#define vec vector<int>
+#define vecd vector<double>
+#define vecll vector<ll>
+#define Graph vector<vector<int>>
+#define wGraph vector<vector<Edge>>
+
+#define rep(i, n) for (int i = 0; i < (int)(n); i++)
+/* rep(i, n) {
+        cout << i;
+  }
+*/
+/* for (auto& x: X) {
+        cin >> x;
+    }
+*/
+
+#define krep(i, k, n) for (int i = k; i < (int)(n); i++)
+
+#define prep(i, n) for (int i = 1; i <= (int)(n); i++)
+
+#define irep(i, n) for (int i = (int)n - 1; i >= 0; i--)
+
+#define all(v) v.begin(), v.end()
+/*
+  vector<int> v = {2, 3, 1}
+  sort(all(v))
+*/
+
+#define INF INT_MAX
+#define LINF LLONG_MAX
+
+const int dx[4] = {1, 0, -1, 0};
+const int dy[4] = {0, 1, 0, -1};
+
+/* -------------------------------------------------------------------
+if (bit & (1 << i)) -> i番目のフラグがたっているか
+bit |= (1 << i) -> i番目のフラグをたてる
+bit &= ~(1 << i) -> i番目のフラグを消す
+__builtin_popcount(bit) -> 何個のフラグが立っているか
+
+bit |= mask -> maskで表された部分のフラグをまとめて立てる
+bit &= ~mask -> maskで表された部分のフラグをまとめて消す
+bit & mask -> maskで表された部分の情報のみを取り出したもの
+------------------------------------------------------------------- */
+
+vec pow_vec{1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
+
+vecll pow_vecll{1,        10,        100,        1000,        10000,        100000,       1000000,
+                10000000, 100000000, 1000000000, 10000000000, 100000000000, 1000000000000};
+
+void print_vec(vec v) {
+    rep(i, (int)v.size()) {
+        cout << v.at(i);
+    }
+    cout << endl;
+}
+
+void print_vecll(vecll v) {
+    rep(i, (int)v.size()) {
+        cout << v.at(i);
+    }
+    cout << endl;
+}
+
+vec string_to_vec(string s) {
+    vec v(s.size());
+    rep(i, (int)s.size()) {
+        v.at(i) = s.at(i) - '0';
+    }
+    return v;
+}
+
+char int_to_alphabet(int i) {
+    // i = 0 -> a
+    // i = 25 -> z
+    return i + 'a';
+}
+
+int alphabet_to_int(char s) {
+    return s - 'a';
+}
+
+// 深さ優先探索
+
+vector<int> cc;  // どの連結成分か記録
+void dfs(const Graph& G, int v, int id) {
+    cc[v] = id;
+
+    for (auto e : G[v]) {
+        if (cc[e] == -1) {  // 訪問済みでなければ探索
+            dfs(G, e, id);
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    // ----------------------------------------------------------------
+
+    int n, m;
+    cin >> n >> m;
+    Graph G(n + 1);
+    vec E(n + 1);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        E[u]++;
+        E[v]++;
+        G[u].push_back(v);
+        G[v].push_back(u);
+    }
+
+    cc.assign(n + 1, -1);  // 初期化
+    int id = 0;
+    prep(i, n) {
+        if (cc[i] == -1) {
+            dfs(G, i, id);
+            id++;
+        }
+    }
+
+    vec ns(id), es(id);
+    prep(i, n) {
+        ns.at(cc.at(i))++;
+        es.at(cc.at(i)) += E.at(i);
+    }
+
+    bool ans = true;
+    rep(i, id) {
+        // cout << ns.at(i) << es.at(i) << endl;
+        if (ns.at(i) != (es.at(i) / 2)) {
+            ans = false;
+        }
+    }
+
+    // cout << "id" << id << endl;
+
+    if (ans) {
+        cout << "Yes" << endl;
+    } else {
+        cout << "No" << endl;
+    }
+
+    // ----------------------------------------------------------------
+    return 0;
+}

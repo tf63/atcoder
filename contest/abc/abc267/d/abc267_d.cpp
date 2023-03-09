@@ -1,12 +1,17 @@
 #include <algorithm>
+#include <climits>
 #include <cmath>
 #include <cstdio>
+#include <functional>
 #include <iostream>
+#include <iterator>
+#include <map>
+#include <numeric>
 #include <queue>
+#include <set>
 #include <stack>
 #include <string>
 #include <vector>
-
 using namespace std;
 
 #define ll long long
@@ -34,8 +39,8 @@ using namespace std;
   sort(all(v))
 */
 
-#define INF 2000000000
-#define MINF -200000000
+#define INF INT_MAX
+#define LINF LLONG_MAX
 
 const int dx[4] = {1, 0, -1, 0};
 const int dy[4] = {0, 1, 0, -1};
@@ -74,8 +79,35 @@ void print_vec(vec v) {
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
+    // 16:45
     // ----------------------------------------------------------------
+    int N, M;
+    cin >> N >> M;
+    vecll A(N + 1);
+    prep(i, N) {
+        cin >> A.at(i);
+    }
 
+    vector<vecll> dp(N + 1, vecll(M + 1, -LINF));
+    rep(i, N) {
+        dp.at(i).at(0) = 0;
+    }
+    prep(i, N) {
+        prep(j, M) {
+            if (j > i) {
+                break;
+            }
+            if (dp.at(i - 1).at(j) != -LINF) {
+                dp.at(i).at(j) = max(dp.at(i).at(j), dp.at(i - 1).at(j));
+            }
+
+            if (dp.at(i - 1).at(j - 1) != -LINF) {
+                dp.at(i).at(j) = max(dp.at(i).at(j), dp.at(i - 1).at(j - 1) + j * A.at(i));
+            }
+        }
+    }
+
+    cout << dp.at(N).at(M) << endl;
     // ----------------------------------------------------------------
     return 0;
 }

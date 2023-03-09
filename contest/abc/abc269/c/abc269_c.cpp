@@ -91,22 +91,40 @@ void push_vec(vecll& v, ll k) {
     }
 }
 
+void f(ll sum, int idx, vecll& out, vecll& digits) {
+    if (idx == (int)digits.size()) {
+        out.push_back(sum);
+        return;
+    }
+
+    f(sum, idx + 1, out, digits);
+    sum += ((ll)1 << digits.at(idx));
+    f(sum, idx + 1, out, digits);
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
     ll N;
     cin >> N;
-    vecll vec_out{0};
 
-    ll digit = 0;
-
-    for (int bit = 0; bit < 64; bit++) {
-        digit = (ll)1 << bit;
-        if ((N & digit) != 0) {
-            push_vec(vec_out, digit);
-        }
+    if (N == 0) {
+        cout << 0 << endl;
+        return 0;
     }
 
-    print_vec(vec_out);
+    vecll digits(0);
+    rep(i, 60) {
+        if (N % 2 == 1) {
+            digits.push_back(i);
+        }
+        N = N >> 1;
+    }
+
+    vecll out(0);
+    f(0, 0, out, digits);
+    sort(all(out));
+    // out.erase(unique(all(out)), out.end());
+    print_vec(out);
 }

@@ -65,10 +65,10 @@ vecll pow_vecll{1,        10,        100,        1000,        10000,        1000
                 10000000, 100000000, 1000000000, 10000000000, 100000000000, 1000000000000};
 
 void print_vec(vec v) {
-    rep(i, (int)v.size()) {
-        cout << v.at(i);
+    rep(i, (int)v.size() - 1) {
+        cout << v.at(i) << " ";
     }
-    cout << endl;
+    cout << v.back() << endl;
 }
 
 vec string_to_vec(string s) {
@@ -80,23 +80,25 @@ vec string_to_vec(string s) {
 }
 
 int Y = 0;
-void dfs(vector<vector<int>>& G, int v, vector<bool>& seen, vector<int>& route) {
-    seen[v] = true;  // v を訪問済にする
+bool stop = false;
+void dfs(vector<vector<int>>& G, int v, vector<bool>& visit, vector<int>& route) {
+    visit[v] = true;  // v を訪問済にする
     route.push_back(v);
 
     // v から行ける各頂点 next_v について
     for (auto next_v : G[v]) {
-        if (seen[next_v])
+        if (visit[next_v])
             continue;  // next_v が探索済だったらスルー
 
         if (next_v == Y) {
-            return;
+            stop = true;
         }
 
-        dfs(G, next_v, seen, route);  // 再帰的に探索
+        dfs(G, next_v, visit, route);  // 再帰的に探索
     }
-
-    route.pop_back();
+    if (!stop) {
+        route.pop_back();
+    }
 }
 
 int main() {
@@ -113,11 +115,18 @@ int main() {
         G.at(v).push_back(u);
     }
 
-    vector<int> route(0);
-    vector<bool> seen(N + 1);
+    vector<bool> visit(N + 1, false);
+    vec route(0);
+    dfs(G, X, visit, route);
 
-    dfs(G, X, seen, route);
-    print_vec(route);
+    rep(i, N) {
+        if (route.at(i) == Y) {
+            break;
+        }
+        cout << route.at(i) << " ";
+    }
+
+    cout << Y << endl;
     // ----------------------------------------------------------------
     return 0;
 }

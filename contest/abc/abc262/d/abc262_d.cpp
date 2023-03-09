@@ -20,17 +20,17 @@ using namespace std;
 #define Graph vector<vector<int>>
 #define wGraph vector<vector<Edge>>
 
-#define rep(i, n) for (int i = 0; i < (int)(n); i++)
+#define rep(i, n) for (ll i = 0; i < (int)(n); i++)
 /* rep(i, n) {
     cout << i;
   }
 */
 
-#define krep(i, k, n) for (int i = k; i < (int)(n); i++)
+#define krep(i, k, n) for (ll i = k; i < (int)(n); i++)
 
-#define prep(i, n) for (int i = 1; i <= (int)(n); i++)
+#define prep(i, n) for (ll i = 1; i <= (int)(n); i++)
 
-#define irep(i, n) for (int i = n - 1; i >= 0; i--)
+#define irep(i, n) for (ll i = n - 1; i >= 0; i--)
 
 #define all(v) v.begin(), v.end()
 /*
@@ -89,20 +89,36 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
-    int N;
-    vec A(N);
-    rep(i, N) {
+    ll N;
+    cin >> N;
+    vecll A(N + 1);
+    prep(i, N) {
         cin >> A.at(i);
     }
 
     ll mod = 998244353;
 
-    vector<vector<vector<ll>>> dp(N, vector<vector<ll>>(N, vector<ll>(N)));
-    rep(i, N) {
-        rep(j, N) {
-            rep(k, N) {}
+    ll sum = 0;
+    prep(i, N) {
+        vector<vector<vector<ll>>> dp(N + 1, vector<vector<ll>>(N + 1, vector<ll>(N + 1)));
+        dp.at(0).at(0).at(0) = 1;
+
+        prep(j, N) {
+            dp.at(j).at(0).at(0) = (dp.at(j).at(0).at(0) + dp.at(j - 1).at(0).at(0)) % mod;
+            prep(k, N) {
+                rep(l, N) {
+                    dp.at(j).at(k).at(l) = (dp.at(j).at(k).at(l) + dp.at(j - 1).at(k).at(l)) % mod;
+                    int idx = A.at(j) % i;
+                    idx = (idx + l) % i;
+                    dp.at(j).at(k).at(idx) = (dp.at(j).at(k).at(idx) + dp.at(j - 1).at(k - 1).at(l)) % mod;
+                }
+            }
         }
+
+        sum = (sum + dp.at(N).at(i).at(0)) % mod;
     }
+
+    cout << sum << endl;
     // ----------------------------------------------------------------
     return 0;
 }

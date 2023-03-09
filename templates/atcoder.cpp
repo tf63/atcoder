@@ -10,6 +10,7 @@
 #include <map>
 #include <numeric>
 #include <queue>
+#include <set>
 #include <stack>
 #include <string>
 #include <vector>
@@ -37,7 +38,7 @@ using namespace std;
 
 #define prep(i, n) for (int i = 1; i <= (int)(n); i++)
 
-#define irep(i, n) for (int i = n - 1; i >= 0; i--)
+#define irep(i, n) for (int i = (int)n - 1; i >= 0; i--)
 
 #define all(v) v.begin(), v.end()
 /*
@@ -97,6 +98,16 @@ char int_to_alphabet(int i) {
 
 int alphabet_to_int(char s) {
     return s - 'a';
+}
+
+int mmod(int a, int b) {
+    a += (abs(a / b) + 1) * b;
+    return a % b;
+}
+
+ll mmod(ll a, ll b) {
+    a += (abs(a / b) + 1) * b;
+    return a % b;
 }
 
 int main() {
