@@ -10,6 +10,7 @@
 #include <map>
 #include <numeric>
 #include <queue>
+#include <set>
 #include <stack>
 #include <string>
 #include <vector>
@@ -37,7 +38,7 @@ using namespace std;
 
 #define prep(i, n) for (int i = 1; i <= (int)(n); i++)
 
-#define irep(i, n) for (int i = n - 1; i >= 0; i--)
+#define irep(i, n) for (int i = (int)n - 1; i >= 0; i--)
 
 #define all(v) v.begin(), v.end()
 /*
@@ -99,10 +100,52 @@ int alphabet_to_int(char s) {
     return s - 'a';
 }
 
+int mmod(int a, int b) {
+    a += (abs(a / b) + 1) * b;
+    return a % b;
+}
+
+ll mmod(ll a, ll b) {
+    a += (abs(a / b) + 1) * b;
+    return a % b;
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    int R, C;
+    cin >> R >> C;
+
+    vector<vector<char>> B(R, vector<char>(C, '#'));
+    char b;
+    rep(i, R) {
+        rep(j, C) {
+            cin >> b;
+            if (b == '.') {
+                B[i][j] = '.';
+            }
+
+            if (b == '1' || b == '2' || b == '3' || b == '4' || b == '5' || b == '6' || b == '7' || b == '8' ||
+                b == '9') {
+                int bomb = b - '1' + 1;
+                for (int bi = 0; bi < R; bi++) {
+                    for (int bj = 0; bj < C; bj++) {
+                        if (abs(i - bi) + abs(j - bj) <= bomb) {
+                            B[bi][bj] = '.';
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    rep(i, R) {
+        rep(j, C) {
+            cout << B[i][j];
+        }
+        cout << endl;
+    }
 
     // ----------------------------------------------------------------
     return 0;

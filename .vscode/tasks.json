@@ -2,60 +2,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "compile",
-            "type": "shell",
-            "command": "g++",
-            "args": [
-                "-std=gnu++17",
-                "-Wall",
-                "-Wextra",
-                "-O2",
-                "-DONLINE_JUDGE",
-                "-I/opt/boost/gcc/include",
-                "-L/opt/boost/gcc/lib",
-                "-I/lib/ac-library",
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}.out"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "reveal": "always",
-                "focus": true,
-                "panel": "shared",
-            }
-        },
-        {
-            "label": "execute",
-            "type": "shell",
-            "command": "${fileDirname}/${fileBasenameNoExtension}.out",
-            "presentation": {
-                "reveal": "always",
-                "focus": true,
-                "panel": "shared",
-            },
-            "dependsOn": [
-                "compile"
-            ],
-        },
-        {
-            "label": "execute with input.txt",
-            "type": "shell",
-            "command": "${fileDirname}/${fileBasenameNoExtension}.out < ${workspaceFolder}/input.txt",
-            "presentation": {
-                "reveal": "always",
-                "focus": true,
-                "panel": "shared",
-            },
-            "dependsOn": [
-                "compile"
-            ],
-        },
-        {
             "label": "abc_dl",
             "type": "shell",
             "command": "${workspaceFolder}/bin/abc_dl ${input:abc_dl}",
@@ -102,6 +48,60 @@
             "label": "submit",
             "type": "shell",
             "command": "cd ${fileDirname} && acc submit ${file}",
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+            }
+        },
+        {
+            "label": "execute",
+            "type": "shell",
+            "command": "${fileDirname}/${fileBasenameNoExtension}.out",
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+            },
+            "dependsOn": [
+                "compile"
+            ],
+        },
+        {
+            "label": "execute with input.txt",
+            "type": "shell",
+            "command": "${fileDirname}/${fileBasenameNoExtension}.out < ${workspaceFolder}/input.txt",
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+            },
+            "dependsOn": [
+                "compile"
+            ],
+        },
+        {
+            "label": "compile",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=gnu++17",
+                "-Wall",
+                "-Wextra",
+                "-O2",
+                "-DONLINE_JUDGE",
+                "-I/opt/boost/gcc/include",
+                "-L/opt/boost/gcc/lib",
+                "-I/lib/ac-library",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.out"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "presentation": {
                 "reveal": "always",
                 "focus": true,
