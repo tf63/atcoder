@@ -68,6 +68,61 @@ vec pow_vec{1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 10000
 vecll pow_vecll{1,        10,        100,        1000,        10000,        100000,       1000000,
                 10000000, 100000000, 1000000000, 10000000000, 100000000000, 1000000000000};
 
+class UnionFind {
+   public:
+    int par[100009];
+    int siz[100009];
+
+    // N頂点のUnion-Findを作成
+    void init(int N) {
+        for (int i = 1; i <= N; i++) {
+            par[i] = -1;  // 最初は親がない
+        }
+        for (int i = 1; i <= N; i++) {
+            siz[i] = 1;  // 最初はグループの頂点数が1
+        }
+    }
+
+    // 頂点xの根を返す
+    int root(int x) {
+        while (true) {
+            if (par[x] == -1) {
+                // 一個先が無ければここが根
+                break;
+            }
+            x = par[x];
+        }
+        return x;
+    }
+
+    // 要素uとvを結合する
+    void unite(int u, int v) {
+        int RootU = root(u);
+        int RootV = root(v);
+
+        if (RootU == RootV) {
+            return;
+        }
+
+        if (siz[RootU] < siz[RootV]) {
+            par[RootU] = RootV;
+            siz[RootU] = siz[RootU] + siz[RootV];
+        } else {
+            par[RootV] = RootU;
+            siz[RootV] = siz[RootV] + siz[RootU];
+        }
+    }
+
+    // 要素uと要素vが同じグループに属するかどうか
+    bool same(int u, int v) {
+        if (root(u) == root(v)) {
+            return true;
+        }
+
+        return false;
+    }
+};
+
 void print_vec(vec v) {
     rep(i, (int)v.size()) {
         cout << v.at(i);
