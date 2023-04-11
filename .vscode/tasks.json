@@ -34,7 +34,7 @@
         {
             "label": "test",
             "type": "shell",
-            "command": "oj t -d ${fileDirname}/tests/ -c ${fileDirname}/${fileBasenameNoExtension}.out",
+            "command": "oj t -d ${fileDirname}/tests/ -c ${fileDirname}/${fileBasenameNoExtension}.out -N",
             "dependsOn": [
                 "compile"
             ],

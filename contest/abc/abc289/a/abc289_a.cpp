@@ -169,7 +169,18 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    string S;
+    cin >> S;
 
+    for (char s : S) {
+        if (s == '0') {
+            cout << '1';
+        } else {
+            cout << '0';
+        }
+    }
+
+    cout << endl;
     // ----------------------------------------------------------------
     return 0;
 }

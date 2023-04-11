@@ -169,7 +169,26 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    int N, M;
+    cin >> N >> M;
+    vec a(N);
+    rep(i, M) {
+        cin >> a[i];
+    }
 
+    int m = 0;
+    stack<int> s;
+    prep(i, N) {
+        s.push(i);
+        if (a[m] == i) {
+            m++;
+        } else {
+            while (!s.empty()) {
+                cout << s.top() << " ";
+                s.pop();
+            }
+        }
+    }
     // ----------------------------------------------------------------
     return 0;
 }
