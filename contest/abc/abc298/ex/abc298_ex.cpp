@@ -165,14 +165,6 @@ ll mmod(ll a, ll b) {
     return a % b;
 }
 
-bool s_contain(string s, char c) {
-    if (s.find(c) != string::npos) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
