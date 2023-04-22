@@ -169,7 +169,48 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    int N;
+    cin >> N;
+    int A[N][N], B[N][N];
+    rep(i, N) {
+        rep(j, N) {
+            cin >> A[i][j];
+        }
+    }
+    rep(i, N) {
+        rep(j, N) {
+            cin >> B[i][j];
+        }
+    }
 
+    bool q = true, w = true, e = true, r = true;
+    rep(i, N) {
+        rep(j, N) {
+            if (B[i][j] != 1) {
+                if (A[i][j] == 1) {
+                    q = false;
+                }
+
+                if (A[N - 1 - j][i] == 1) {
+                    w = false;
+                }
+
+                if (A[N - 1 - i][N - 1 - j] == 1) {
+                    e = false;
+                }
+
+                if (A[j][N - 1 - i] == 1) {
+                    r = false;
+                }
+            }
+        }
+    }
+
+    if (q | w | e | r) {
+        cout << "Yes" << endl;
+    } else {
+        cout << "No" << endl;
+    }
     // ----------------------------------------------------------------
     return 0;
 }

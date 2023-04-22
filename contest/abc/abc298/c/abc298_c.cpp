@@ -169,7 +169,36 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     // ----------------------------------------------------------------
+    int N, Q;
+    cin >> N >> Q;
+    vector<multiset<int>> B(N + 1, multiset<int>());
+    vector<set<int>> C(5 * (int)10e5, set<int>());
 
+    rep(i, Q) {
+        int q;
+        cin >> q;
+        if (q == 1) {
+            int k, l;
+            cin >> k >> l;
+            B[l].insert(k);
+            C[k].insert(l);
+        } else if (q == 2) {
+            int k;
+            cin >> k;
+            for (auto it = B[k].begin(); it != B[k].end(); it++) {
+                cout << *it << " ";
+            }
+            cout << endl;
+        } else if (q == 3) {
+            int k;
+            cin >> k;
+            for (auto it = C[k].begin(); it != C[k].end(); it++) {
+                cout << *it << " ";
+            }
+            cout << endl;
+        } else {
+        }
+    }
     // ----------------------------------------------------------------
     return 0;
 }
